@@ -1,10 +1,13 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	"html/template"
+	// "html/template"
 	"net/http"
 	"strconv"
+
+	"github.com/staticaland/snippetbox/internal/models"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -13,23 +16,33 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    // Include the navigation partial in the template files.
-    files := []string{
-        "./ui/html/base.tmpl",
-        "./ui/html/partials/nav.tmpl",
-        "./ui/html/pages/home.tmpl",
-    }
+    snippets, err := app.snippets.Latest()
 
-    ts, err := template.ParseFiles(files...)
-    if err != nil {
+	if err != nil {
 		app.serverError(w, err)
-        return
-    }
+		return
+	}
 
-    err = ts.ExecuteTemplate(w, "base", nil)
-    if err != nil {
-		app.serverError(w, err)
-    }
+	for _, snippet := range snippets {
+		fmt.Fprintf(w, "%+v\n", snippet)
+	}
+
+    // files := []string{
+    //     "./ui/html/base.tmpl",
+    //     "./ui/html/partials/nav.tmpl",
+    //     "./ui/html/pages/home.tmpl",
+    // }
+
+    // ts, err := template.ParseFiles(files...)
+    // if err != nil {
+	// 	app.serverError(w, err)
+    //     return
+    // }
+
+    // err = ts.ExecuteTemplate(w, "base", nil)
+    // if err != nil {
+	// 	app.serverError(w, err)
+    // }
 }
 
 func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
@@ -39,7 +52,17 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    fmt.Fprintf(w, "Display a specific snippet with ID %d...", id)
+	snippet, err := app.snippets.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+    fmt.Fprintf(w, "%+v", snippet)
 }
 
 func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
