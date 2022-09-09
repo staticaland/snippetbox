@@ -18,4 +18,4 @@ jobs:
       - name: Install prettier
         run: npm install --save-dev prettier prettier-plugin-go-template
       - name: Run prettier
-        run: prettier --check ui/html/**.tmpl
+        run: npx prettier --check ui/html/**.tmpl
