@@ -16,8 +16,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
       - name: Install prettier
-        run: npm install --save-dev prettier prettier-plugin-go-template
+        run: npm install --global prettier prettier-plugin-go-template
       - name: Run prettier
-        run: npx prettier --write ui/html/**.tmpl
+        run: prettier --write ui/html/**.tmpl
       - name: Check commit is clean
         run: test -z "$(git status --porcelain)" || (git status; git diff; false)
