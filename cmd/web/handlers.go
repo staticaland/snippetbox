@@ -9,40 +9,41 @@ import (
 
 	"github.com/staticaland/snippetbox/internal/models"
 )
-
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
     if r.URL.Path != "/" {
-		app.notFound(w)
+        app.notFound(w)
         return
     }
 
     snippets, err := app.snippets.Latest()
+    if err != nil {
+        app.serverError(w, err)
+        return
+    }
 
-	if err != nil {
-		app.serverError(w, err)
-		return
-	}
+    files := []string{
+        "./ui/html/base.tmpl",
+        "./ui/html/partials/nav.tmpl",
+        "./ui/html/pages/home.tmpl",
+    }
 
-	for _, snippet := range snippets {
-		fmt.Fprintf(w, "%+v\n", snippet)
-	}
+    ts, err := template.ParseFiles(files...)
+    if err != nil {
+        app.serverError(w, err)
+        return
+    }
 
-    // files := []string{
-    //     "./ui/html/base.tmpl",
-    //     "./ui/html/partials/nav.tmpl",
-    //     "./ui/html/pages/home.tmpl",
-    // }
+    // Create an instance of a templateData struct holding the slice of
+    // snippets.
+    data := &templateData{
+        Snippets: snippets,
+    }
 
-    // ts, err := template.ParseFiles(files...)
-    // if err != nil {
-	// 	app.serverError(w, err)
-    //     return
-    // }
-
-    // err = ts.ExecuteTemplate(w, "base", nil)
-    // if err != nil {
-	// 	app.serverError(w, err)
-    // }
+    // Pass in the templateData struct when executing the template.
+    err = ts.ExecuteTemplate(w, "base", data)
+    if err != nil {
+        app.serverError(w, err)
+    }
 }
 
 func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
