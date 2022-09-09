@@ -18,6 +18,6 @@ jobs:
       - name: Install prettier
         run: npm install --global prettier prettier-plugin-go-template
       - name: Run prettier
-        run: prettier --write ui/html/**.tmpl
+        run: prettier --write ui/html/**/*.tmpl
       - name: Check commit is clean
         run: test -z "$(git status --porcelain)" || (git status; git diff; false)
