@@ -26,6 +26,6 @@ jobs:
       - name: Run snippetbox
         run: ./snippetbox --help
       - name: Test
-        run: go test -v
+        run: go test -v .
 permissions:
   contents: read
