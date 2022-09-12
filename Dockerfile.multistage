@@ -7,7 +7,7 @@ COPY . .
 
 RUN go mod download
 
-RUN CGO_ENABLED=0 go build -o /go/bin/snippetbox
+RUN CGO_ENABLED=0 go build -o /go/bin/snippetbox ./cmd/web
 
 FROM gcr.io/distroless/static-debian11
 
