@@ -44,15 +44,18 @@ jobs:
             type=sha,prefix=
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@dc7b9719a96d48369863986a06765841d7ea23f6
-      - name: Build and push Docker image to Docker Hub and AWS
+      - name: Build and push Docker image to Docker Hub and AWS (if push enabled)
         uses: docker/build-push-action@c84f38281176d4c9cdb1626ffafcd6b3911b5d94
         with:
           context: .
           file: Dockerfile.multistage
+          load: true
           push: false
           tags: ${{ steps.docker-meta.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Run the Docker image
+        run: docker run --rm ${{ fromJSON(steps.docker-meta.outputs.json).tags[0] }} --help
       - name: Setup CUE environment
         uses: cue-lang/setup-cue@143c2fe537047bf8c7ead6a30784ad1802e9d991
         with:
