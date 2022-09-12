@@ -56,23 +56,5 @@ jobs:
           cache-to: type=gha,mode=max
       - name: Run the Docker image
         run: docker run --rm ${{ fromJSON(steps.docker-meta.outputs.json).tags[0] }}
-      - name: Setup CUE environment
-        uses: cue-lang/setup-cue@143c2fe537047bf8c7ead6a30784ad1802e9d991
-        with:
-          version: v0.4.3
-      - name: Render task definition using CUE
-        run: |-
-          cue export cue/ecs/ecs_task_def.cue \
-          	   --inject app_image='${{ fromJSON(steps.docker-meta.outputs.json).tags[2] }}' \
-          	   --inject ecs_execution_role_arn='ecsTaskExecutionRole' \
-          	   --expression ecs_task_def \
-          	   > task-definition.json
-      - name: Register a ECS task definition and deploy it to ECS
-        uses: aws-actions/amazon-ecs-deploy-task-definition@9c18d81893224634ac107b91720119c91c1d600e
-        with:
-          task-definition: task-definition.json
-          service: snippetbox
-          cluster: ecs-fargate
-          wait-for-service-stability: true
 permissions:
   contents: read
