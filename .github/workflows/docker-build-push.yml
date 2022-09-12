@@ -55,7 +55,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Run the Docker image
-        run: docker run --rm ${{ fromJSON(steps.docker-meta.outputs.json).tags[0] }} --help
+        run: docker run --rm ${{ fromJSON(steps.docker-meta.outputs.json).tags[0] }} '/snippetbox --help'
       - name: Setup CUE environment
         uses: cue-lang/setup-cue@143c2fe537047bf8c7ead6a30784ad1802e9d991
         with:
