@@ -1,15 +1,13 @@
-#+title: Let's Go
-
-https://lets-go.alexedwards.net/
+Code for the [[https://lets-go.alexedwards.net/][Let's Go book by Alex Edwards]].
 
 Project structure loosely based on:
 
-- https://peter.bourgon.org/go-best-practices-2016
-- https://github.com/thockin/go-build-template
+- [[https://peter.bourgon.org/go-best-practices-2016][Peter Bourgon - Go best practices, six years in]]
+- [[https://github.com/thockin/go-build-template][thockin/go-build-template]]
 
 Important things so far:
 
-- Handlers are receiver functions of the `application` struct
-- Routes are receiver functions of the `application` struct
-- Snippets are receiver functions of the `SnippetModel` struct
+- Handlers are receiver functions of the =application= struct
+- Routes are receiver functions of the =application= struct
+- Snippets are receiver functions of the =SnippetModel= struct
   - This essentially means that the DB connection is shared between all the query functions
