@@ -13,4 +13,5 @@ FROM gcr.io/distroless/static-debian11
 
 COPY --from=build /go/bin/snippetbox /
 
-CMD ["/snippetbox"]
+ENTRYPOINT ["/snippetbox"]
+CMD ["--help"]
