@@ -16,7 +16,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Run the GitHub Super-Linter
-        uses: github/super-linter/slim@01d3218744765b55c3b5ffbb27e50961e50c33c5
+        uses: docker://ghcr.io/github/super-linter:slim-v4.9.5
         env:
           VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'workflow_dispatch' }}
           DEFAULT_BRANCH: main
