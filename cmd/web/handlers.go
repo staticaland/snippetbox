@@ -215,6 +215,7 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/snippet/create", http.StatusSeeOther)
 }
 
+// Trigger CI
 func (app *application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
 
 	err := app.sessionManager.RenewToken(r.Context())
