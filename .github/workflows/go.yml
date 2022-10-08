@@ -25,5 +25,7 @@ jobs:
         run: go build -o snippetbox ./cmd/web
       - name: Run snippetbox
         run: ./snippetbox --help
+      - name: Test
+        run: go test -v .
 permissions:
   contents: read
